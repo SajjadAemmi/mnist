@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += \
-        c++11
+        c++17
 
 HEADERS += \
         mainwindow.h
@@ -36,11 +36,10 @@ FORMS += \
         mainwindow.ui
 
 RESOURCES += \
-        mnist.onnx \
-        3.jpg
-
+        mnist.onnx
 
 INCLUDEPATH += /usr/local/include/opencv4
+
 LIBS += -L/usr/local/lib \
         -lopencv_imgcodecs \
         -lopencv_imgproc \
