@@ -39,10 +39,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::process()
 {
-    cv::Mat image, image_small, image_small_gray;
+    cv::Mat image, image_small, image_small_gray, image_vector;
     int input_width, input_height;
 
-    image = cv::imread("/home/sajjad/Documents/mnist/3.jpg");
+    image = cv::imread("/home/sajjad/Documents/mnist/0.png");
 
 //    if ( !image.data )
 //    {
@@ -50,8 +50,8 @@ void MainWindow::process()
 //      return;
 //    }
 
-    cv::resize(image, image, cv::Size(28, 28));
-    cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
+    cv::resize(image, image_small, cv::Size(28, 28));
+    cv::cvtColor(image_small, image_small_gray, cv::COLOR_BGR2GRAY);
 
     input_width = 28;
     input_height = 28;
@@ -60,19 +60,24 @@ void MainWindow::process()
 
     cv::Mat blob;
     // Create a 4D blob from a frame.
-    image = image.reshape (1, image.rows * image.cols);
+    image_vector = image_small_gray.reshape (1, image_small_gray.rows * image_small_gray.cols);
 
-    cv::dnn::blobFromImage(image, blob);
+    cv::dnn::blobFromImage(image_vector, blob);
 
     net.setInput(blob, "");
     vector<cv::Mat> outs;
     net.forward(outs);
 
-    qDebug() << "besco" << outs[0].size;
+    double minVal, maxVal;
+    cv::Point minLoc, maxLoc;
 
-//     cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
-//     cv::imshow("Display Image", image);
-//     cv::waitKey(0);
+    minMaxLoc(outs[0], &minVal, &maxVal, &minLoc, &maxLoc);
+
+    qDebug() << "besco" << maxLoc.x;
+
+     cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
+     cv::imshow("Display Image", image);
+     cv::waitKey(0);
 
 //    end_time = clock();
 //    qDebug() << float(end_time - start_time) / CLOCKS_PER_SEC << " seconds";
