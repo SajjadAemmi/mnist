@@ -71,3 +71,4 @@ Thumbs.db
 *.dll
 *.exe
 
+Java_mnist_inference/lib/onnxruntime-1.15.1.jar
